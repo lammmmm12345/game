@@ -32,7 +32,6 @@
             min-height: 100vh;
         }
 
-        /* Typography & Utility */
         h1, h2, h3 { font-family: var(--font-mono); font-weight: normal; text-transform: uppercase; letter-spacing: 1px; }
         .text-cyan { color: var(--accent-cyan); }
         .text-green { color: var(--accent-green); }
@@ -40,720 +39,508 @@
         .text-warn { color: var(--accent-warn); }
         .hide { display: none !important; }
 
-        /* UI HUD */
+        /* HUD & Controls */
         #hud {
             position: fixed; top: 0; left: 0; right: 0;
-            background: rgba(17, 24, 39, 0.9);
-            border-bottom: 1px solid var(--border-color);
-            padding: 10px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 100; backdrop-filter: blur(5px);
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
+            background: rgba(17, 24, 39, 0.95); border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; backdrop-filter: blur(5px); font-family: var(--font-mono); font-size: 0.9rem;
         }
-        
-        .hud-stats { display: flex; gap: 20px; }
+        .hud-stats { display: flex; gap: 15px; }
         .hud-stat-box { background: var(--bg-card); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--border-color); }
         
+        .controls { display: flex; gap: 10px; }
         .controls button {
-            background: transparent; border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan); padding: 5px 10px; cursor: pointer;
-            border-radius: 4px; font-family: var(--font-mono); transition: 0.2s;
+            background: rgba(0, 242, 254, 0.1); border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan); padding: 6px 12px; cursor: pointer;
+            border-radius: 4px; font-family: var(--font-mono); transition: 0.2s; font-weight: bold;
         }
         .controls button:hover { background: var(--accent-cyan); color: var(--bg-main); }
-
-        /* Progress Bar */
-        #progress-container { width: 100%; height: 4px; background: var(--bg-card); position: fixed; top: 41px; left: 0; z-index: 100; }
-        #progress-bar { height: 100%; width: 0%; background: var(--accent-cyan); transition: width 0.5s ease; box-shadow: 0 0 10px var(--accent-cyan); }
 
         /* Screens */
         .screen {
             padding: 80px 20px 40px; max-width: 1200px; margin: 0 auto;
-            width: 100%; flex: 1; opacity: 0;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            transform: translateY(20px);
-            display: none;
+            width: 100%; flex: 1; opacity: 0; display: none;
+            transition: opacity 0.4s ease, transform 0.4s ease; transform: translateY(20px);
         }
         .screen.active { display: block; opacity: 1; transform: translateY(0); }
 
         /* Main Menu */
         #main-menu { text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 80vh; }
         .glitch-title { font-size: 3.5rem; color: var(--accent-cyan); margin-bottom: 10px; text-shadow: 0 0 10px rgba(0,242,254,0.5); }
-        .subtitle { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 40px; font-family: var(--font-mono); }
-        .menu-btns { display: flex; flex-direction: column; gap: 15px; max-width: 300px; margin: 0 auto; }
+        .menu-btns { display: flex; flex-direction: column; gap: 15px; max-width: 300px; margin: 40px auto 0; }
+        
+        /* Buttons */
         .btn {
             background: var(--bg-panel); border: 1px solid var(--border-color);
-            color: var(--text-main); padding: 15px 20px; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.2s; font-family: var(--font-mono);
-            text-transform: uppercase; position: relative; overflow: hidden;
+            color: var(--text-main); padding: 15px 20px; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s; font-family: var(--font-mono); text-transform: uppercase;
         }
-        .btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.2), transparent);
-            transition: left 0.3s;
-        }
-        .btn:hover::before { left: 100%; }
-        .btn:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(0,242,254,0.2); }
+        .btn:hover { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0,242,254,0.2); background: rgba(0,242,254,0.05); }
         .btn-primary { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-disabled { opacity: 0.5; pointer-events: none; border-color: var(--border-color); color: var(--text-muted); }
 
-        /* Chapter UI */
+        /* Grids & Cards */
         .chapter-header { border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 30px; }
-        .chapter-header h2 { color: var(--accent-cyan); font-size: 1.8rem; }
-        .briefing { background: var(--bg-panel); border-left: 4px solid var(--accent-cyan); padding: 20px; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6; }
-
-        /* Grid Layouts */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .card {
             background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px;
-            cursor: pointer; transition: all 0.2s; position: relative; border-radius: 4px;
+            cursor: pointer; transition: all 0.2s; border-radius: 4px; position: relative;
         }
-        .card:hover { border-color: var(--accent-cyan); transform: translateY(-5px); }
-        .card.solved { border-color: var(--accent-green); opacity: 0.7; pointer-events: none; }
-        .card.solved::after {
-            content: 'ĐÃ XỬ LÝ'; position: absolute; top: 10px; right: 10px;
-            font-size: 0.7rem; background: var(--accent-green); color: #000; padding: 2px 6px; border-radius: 2px; font-family: var(--font-mono);
-        }
-        .card-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
-        .card-title { font-weight: bold; margin-bottom: 10px; color: var(--accent-cyan); }
+        .card:hover { border-color: var(--accent-cyan); transform: translateY(-3px); }
+        .card.visited { border-color: var(--text-muted); opacity: 0.8; }
+        .card.visited::after { content: 'ĐÃ KHÁM NGHIỆM'; position: absolute; top: 10px; right: 10px; font-size: 0.7rem; background: var(--border-color); padding: 2px 6px; border-radius: 2px; }
+        .card-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .card-title { font-weight: bold; margin-bottom: 8px; color: var(--accent-cyan); }
 
-        /* Checkbox & Radio lists for analysis/decision */
-        .option-list { background: var(--bg-panel); padding: 20px; border-radius: 5px; border: 1px solid var(--border-color); }
+        /* Checkbox lists */
+        .option-list { background: var(--bg-panel); padding: 20px; border-radius: 5px; border: 1px solid var(--border-color); margin-bottom: 20px; }
         .option-item { display: block; padding: 15px; border: 1px solid var(--border-color); margin-bottom: 10px; cursor: pointer; transition: 0.2s; }
         .option-item:hover { background: rgba(255,255,255,0.05); }
-        .option-item input { margin-right: 15px; transform: scale(1.2); }
 
-        /* Modals */
+        /* Modals & Case File */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(4px);
             display: flex; justify-content: center; align-items: center;
             z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
             background: var(--bg-panel); border: 1px solid var(--accent-cyan);
-            padding: 30px; width: 90%; max-width: 600px; border-radius: 5px;
-            box-shadow: 0 0 30px rgba(0,242,254,0.1); transform: scale(0.9); transition: 0.3s;
+            padding: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto;
+            border-radius: 5px; transform: scale(0.95); transition: 0.3s; box-shadow: 0 0 30px rgba(0,242,254,0.1);
         }
         .modal-overlay.active .modal-content { transform: scale(1); }
-        .modal-title { font-family: var(--font-mono); color: var(--accent-cyan); margin-bottom: 15px; font-size: 1.5rem; }
-        .modal-body { margin-bottom: 25px; line-height: 1.6; }
-        .modal-actions { display: flex; gap: 10px; flex-direction: column; }
-
-        /* Knowledge Card Toast */
-        #knowledge-toast {
-            position: fixed; bottom: 20px; right: -400px; width: 350px;
-            background: var(--bg-card); border-left: 4px solid var(--accent-warn);
-            padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000;
-        }
-        #knowledge-toast.show { right: 20px; }
-        .toast-title { color: var(--accent-warn); font-family: var(--font-mono); font-size: 0.9rem; margin-bottom: 8px; text-transform: uppercase; }
-
-        /* Terminal Logs */
-        .terminal { background: #000; color: var(--accent-green); padding: 15px; font-family: var(--font-mono); font-size: 0.9rem; border-radius: 4px; height: 150px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #333; }
-        .terminal p { margin-bottom: 5px; }
-
-        @media (max-width: 768px) {
-            .glitch-title { font-size: 2rem; }
-            #hud { flex-direction: column; gap: 10px; padding: 10px; }
-            #progress-container { top: 76px; }
-            .screen { padding-top: 100px; }
-        }
+        
+        /* Case File Layout */
+        .tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; }
+        .tab-btn { background: none; border: none; color: var(--text-muted); padding: 10px 20px; cursor: pointer; font-family: var(--font-mono); font-size: 1rem; }
+        .tab-btn.active { color: var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .ev-item { padding: 10px; border-bottom: 1px dashed var(--border-color); display: flex; align-items: flex-start; gap: 15px; }
+        .ev-status { font-family: var(--font-mono); font-weight: bold; width: 30px; }
+        .ev-found { color: var(--accent-green); }
+        .ev-missing { color: var(--text-muted); }
+        .timeline-entry { padding-left: 15px; border-left: 2px solid var(--border-color); margin-bottom: 15px; position: relative; }
+        .timeline-entry::before { content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px; background: var(--accent-cyan); border-radius: 50%; }
+        
+        /* Scene text */
+        .scene-text { background: #000; color: var(--accent-green); padding: 20px; font-family: var(--font-mono); border: 1px solid #333; margin-bottom: 20px; line-height: 1.6; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <!-- UI HUD -->
     <div id="hud" class="hide">
-        <div>SYS: <span class="text-cyan">DATA_LEAK_INVESTIGATOR_OS v1.0</span></div>
+        <div>SYS: <span class="text-cyan">DL_INVESTIGATOR v2.0</span></div>
         <div class="hud-stats">
-            <div class="hud-stat-box">ĐIỂM: <span id="hud-score" class="text-cyan">0</span></div>
-            <div class="hud-stat-box">CHỨNG CỨ: <span id="hud-evidence" class="text-green">0/10</span></div>
-            <div class="hud-stat-box">ĐỘ TIN CẬY: <span id="hud-confidence" class="text-warn">0%</span></div>
+            <div class="hud-stat-box">CHỨNG CỨ: <span id="hud-evidence" class="text-green">0/5</span></div>
         </div>
         <div class="controls">
-            <button onclick="toggleSound()" id="btn-sound">🔊 SOUND ON</button>
+            <button onclick="openCaseFile()">📁 HỒ SƠ VỤ ÁN</button>
         </div>
     </div>
-    <div id="progress-container" class="hide"><div id="progress-bar"></div></div>
 
-    <!-- MAIN MENU -->
     <div id="main-menu" class="screen active">
         <h1 class="glitch-title">DATA LEAK INVESTIGATOR</h1>
-        <p class="subtitle">Hệ thống Điều tra Sự cố An toàn Dữ liệu - Đại học ABC</p>
+        <p style="color: var(--text-muted); font-family: var(--font-mono);">Phần mềm điều tra số & Hệ thống quản lý sự cố dữ liệu</p>
         <div class="menu-btns">
-            <button class="btn btn-primary" onclick="startGame()">Khởi động Hệ thống Điều tra</button>
-            <button class="btn" onclick="showModal('manual-modal')">Sổ tay Điều tra viên</button>
-            <button class="btn" onclick="showModal('about-modal')">Thông tin Hệ thống</button>
+            <button class="btn btn-primary" onclick="startGame()">Bắt đầu Điều tra</button>
         </div>
     </div>
 
-    <!-- CHAPTER 1: PHÁT HIỆN SỰ CỐ -->
-    <div id="chapter-1" class="screen">
+    <div id="stage-1" class="screen">
         <div class="chapter-header">
-            <h2>CHƯƠNG 1: ALERT_TRIGGERED</h2>
+            <h2>GIAI ĐOẠN 1: THU THẬP CHỨNG CỨ HIỆN TRƯỜNG</h2>
         </div>
-        <div class="briefing">
-            <strong>BÁO CÁO SỰ CỐ KHẨN CẤP:</strong><br>
-            Hệ thống phát hiện thông tin của hơn 5.000 sinh viên Đại học ABC bị phát tán trên một diễn đàn hacker. 
-            Các dữ liệu bao gồm: Họ tên, MSSV, SĐT, Email, Địa chỉ.<br><br>
-            Nhiệm vụ của bạn: Xác định nguồn rò rỉ đầu tiên. Chọn một hệ thống/đơn vị để bắt đầu khoanh vùng.
-        </div>
-        <div class="grid-container">
-            <div class="card" onclick="selectLocation('Phòng đào tạo')"><span class="card-icon">📁</span><div class="card-title">Phòng Đào tạo</div><p>Quản lý hồ sơ gốc.</p></div>
-            <div class="card" onclick="selectLocation('Phòng CTSV')"><span class="card-icon">👥</span><div class="card-title">Phòng Công tác SV</div><p>Quản lý danh sách học bổng, ngoại khóa.</p></div>
-            <div class="card" onclick="selectLocation('Trung tâm CNTT')"><span class="card-icon">🖥️</span><div class="card-title">Trung tâm CNTT</div><p>Quản trị máy chủ và cơ sở dữ liệu PostgreSQL.</p></div>
-            <div class="card" onclick="selectLocation('Website trường')"><span class="card-icon">🌐</span><div class="card-title">Website Trường</div><p>Cổng tra cứu thông tin sinh viên.</p></div>
-            <div class="card" onclick="selectLocation('Google Drive')"><span class="card-icon">☁️</span><div class="card-title">Google Drive Nội bộ</div><p>Kho lưu trữ file làm việc chung.</p></div>
-        </div>
+        <p style="margin-bottom: 20px; line-height: 1.6;">Dữ liệu của 5.000 sinh viên vừa bị rò rỉ. Hãy rà soát các hệ thống nội bộ để truy vết manh mối gốc. Chú ý: Cách bạn phân tích tại mỗi địa điểm sẽ quyết định chứng cứ thu được.</p>
+        
+        <div class="grid-container" id="locations-board">
+            </div>
+        
+        <button class="btn btn-primary hide" id="btn-to-interviews" style="width:100%" onclick="goToInterviews()">Tiến hành Phỏng vấn Nghi phạm >></button>
     </div>
 
-    <!-- CHAPTER 2: THU THẬP CHỨNG CỨ -->
-    <div id="chapter-2" class="screen">
+    <div id="stage-2" class="screen">
         <div class="chapter-header">
-            <h2>CHƯƠNG 2: DATA_FORENSICS</h2>
+            <h2>GIAI ĐOẠN 2: THẨM VẤN NHÂN SỰ</h2>
         </div>
-        <div class="briefing">
-            Quét hệ thống và phân tích các dấu vết kỹ thuật. Hãy kiểm tra các chứng cứ thu thập được. (Yêu cầu tìm ít nhất 7/10 chứng cứ để mở khóa bước tiếp theo, không đạt yêu cầu vui lòng reload lại trang để bắt đầu lại).
-        </div>
-        <div class="terminal" id="terminal-log">
-            <p>> Đang khởi tạo module quét hệ thống...</p>
-            <p>> Quét các endpoint, logs và file system...</p>
-        </div>
-        <div class="grid-container" id="evidence-board">
-            <!-- Rendered by JS -->
-        </div>
-        <button class="btn btn-primary hide" id="btn-next-chap3" style="width:100%; margin-top:20px;" onclick="nextChapter(3)">Chuyển sang Phỏng vấn Nhân sự >></button>
+        <p style="margin-bottom: 20px; line-height: 1.6;">Sử dụng các chứng cứ đã thu thập để đối chiếu lời khai. Các câu hỏi sẽ được mở khóa dựa trên những gì bạn đã tìm thấy ở hiện trường.</p>
+        
+        <div class="grid-container" id="suspects-board">
+            </div>
+        
+        <button class="btn btn-primary hide" id="btn-to-analysis" style="width:100%" onclick="goToAnalysis()">Lập Báo Cáo Phân Tích >></button>
     </div>
 
-    <!-- CHAPTER 3: PHỎNG VẤN NHÂN SỰ -->
-    <div id="chapter-3" class="screen">
+    <div id="stage-3" class="screen">
         <div class="chapter-header">
-            <h2>CHƯƠNG 3: HUMAN_FACTOR</h2>
+            <h2>GIAI ĐOẠN 3: KẾT LUẬN ĐIỀU TRA</h2>
         </div>
-        <div class="briefing">
-            Lỗ hổng kỹ thuật thường bắt nguồn từ yếu tố con người. Tiến hành thẩm vấn các nhân sự liên quan để tìm ra sai phạm trong quy trình.
-        </div>
-        <div class="grid-container" id="interview-board">
-            <!-- Rendered by JS -->
-        </div>
-        <button class="btn btn-primary hide" id="btn-next-chap4" style="width:100%; margin-top:20px;" onclick="nextChapter(4)">Tổng hợp và Phân tích Vụ án >></button>
-    </div>
-
-    <!-- CHAPTER 4: PHÂN TÍCH VỤ ÁN -->
-    <div id="chapter-4" class="screen">
-        <div class="chapter-header">
-            <h2>CHƯƠNG 4: ROOT_CAUSE_ANALYSIS</h2>
-        </div>
-        <div class="briefing">
-            Dựa trên các chứng cứ và lời khai, hãy xác định các nguyên nhân lõi dẫn đến sự cố rò rỉ dữ liệu này. (Chọn tất cả các nguyên nhân đúng).
-        </div>
+        
+        <h3 style="margin-bottom: 10px; color: var(--accent-cyan);">1. Phân tích Nguyên nhân cốt lõi</h3>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">Dựa trên toàn bộ hồ sơ, hãy chỉ ra các nguyên nhân gây rò rỉ (Chọn nhiều đáp án):</p>
         <div class="option-list" id="analysis-form">
-            <label class="option-item"><input type="checkbox" value="1"> Dữ liệu lưu trữ trên Google Drive bị đặt sai quyền truy cập (Public).</label>
-            <label class="option-item"><input type="checkbox" value="2"> Giao thức mạng bị tấn công Man-in-the-Middle.</label>
-            <label class="option-item"><input type="checkbox" value="3"> Thiếu cơ chế phân quyền (Authentication/Authorization) trên API tra cứu.</label>
-            <label class="option-item"><input type="checkbox" value="4"> Nhân sự tự ý chuyển dữ liệu nội bộ qua email/thiết bị cá nhân.</label>
-            <label class="option-item"><input type="checkbox" value="5"> Lỗ hổng zero-day trong hệ điều hành Windows.</label>
-            <label class="option-item"><input type="checkbox" value="6"> Tổ chức thiếu quy trình chuẩn (SOP) về vòng đời và phân loại dữ liệu.</label>
-            <label class="option-item"><input type="checkbox" value="7"> Lộ thông tin xác thực Database (Hardcoded credentials) trong mã nguồn mở.</label>
+            <label class="option-item"><input type="checkbox" value="E02"> Lỗi thiết lập quyền truy cập công khai (Google Drive).</label>
+            <label class="option-item"><input type="checkbox" value="E04"> Lỗ hổng kỹ thuật (Phân quyền yếu trên hệ thống/API).</label>
+            <label class="option-item"><input type="checkbox" value="E05"> Nhân viên tự ý chuyển dữ liệu qua kênh cá nhân (Email/Zalo).</label>
+            <label class="option-item"><input type="checkbox" value="HACK"> Bị nhóm Hacker APT tấn công tống tiền.</label>
+            <label class="option-item"><input type="checkbox" value="SOP"> Tổ chức thiếu quy trình chuẩn về quản lý luồng dữ liệu.</label>
         </div>
-        <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="submitAnalysis()">Xác nhận Báo cáo Phân tích</button>
-    </div>
 
-    <!-- CHAPTER 5: RA QUYẾT ĐỊNH -->
-    <div id="chapter-5" class="screen">
-        <div class="chapter-header">
-            <h2>CHƯƠNG 5: INCIDENT_RESPONSE</h2>
-        </div>
-        <div class="briefing">
-            Là người chịu trách nhiệm an toàn thông tin, bạn đề xuất phương án xử lý và khắc phục hậu quả nào cho Ban giám hiệu?
-        </div>
+        <h3 style="margin-bottom: 10px; color: var(--accent-cyan); margin-top: 30px;">2. Quyết định Xử lý</h3>
         <div class="option-list" id="decision-form">
-            <label class="option-item"><input type="radio" name="decision" value="bad"> 
-                <strong>Phương án A:</strong> Âm thầm xóa các file bị lộ, vá lỗi code, không thông báo để tránh hoang mang dư luận. Đuổi việc nhân viên làm rò rỉ.
-            </label>
-            <label class="option-item"><input type="radio" name="decision" value="avg"> 
-                <strong>Phương án B:</strong> Khóa các quyền truy cập Public, cập nhật lại API bảo mật. Gửi email cảnh báo chung chung cho sinh viên đổi mật khẩu.
-            </label>
-            <label class="option-item"><input type="radio" name="decision" value="good"> 
-                <strong>Phương án C:</strong> Cô lập hệ thống lỗi. Minh bạch thông báo chi tiết sự cố cho 5000 SV bị ảnh hưởng. Ban hành quy định mã hóa dữ liệu, xóa DB credentials khỏi code, tổ chức training nhận thức bảo mật cho toàn bộ nhân viên.
-            </label>
+            <label class="option-item"><input type="radio" name="decision" value="bad"> <strong>A.</strong> Thu hồi file, phạt nhân viên liên quan, giữ kín vụ việc để bảo vệ danh tiếng trường.</label>
+            <label class="option-item"><input type="radio" name="decision" value="good"> <strong>B.</strong> Đóng các lỗ hổng, báo cáo cơ quan chức năng, thông báo rủi ro minh bạch cho 5000 sinh viên và thiết lập quy trình kiểm soát dữ liệu mới.</label>
         </div>
-        <button class="btn btn-primary" style="width:100%; margin-top:20px;" onclick="finishGame()">Đóng Vụ Án & Đưa Ra Phán Quyết</button>
+
+        <button class="btn btn-primary" style="width:100%" onclick="finishGame()">Đóng Vụ Án & Xuất Báo Cáo</button>
     </div>
 
-    <!-- ENDING SCREEN -->
     <div id="ending-screen" class="screen">
         <div class="chapter-header">
-            <h2>BÁO CÁO ĐIỀU TRA CUỐI CÙNG</h2>
+            <h2>BÁO CÁO KẾT QUẢ ĐIỀU TRA</h2>
         </div>
-        <div style="background: var(--bg-card); padding: 30px; border: 1px solid var(--border-color); border-radius: 5px; text-align: center;">
-            <h1 id="end-title" style="margin-bottom: 10px;">DANH HIỆU</h1>
-            <p id="end-score" style="font-size: 2rem; color: var(--accent-cyan); font-family: var(--font-mono); margin-bottom: 20px;">Điểm: 0/100</p>
+        <div style="background: var(--bg-card); padding: 30px; border: 1px solid var(--border-color); border-radius: 5px;">
+            <h1 id="end-title" style="text-align: center; margin-bottom: 20px;">DANH HIỆU</h1>
             
-            <div style="text-align: left; margin-bottom: 20px; line-height: 1.8;">
-                <p><strong>Số chứng cứ thu thập:</strong> <span id="end-ev"></span>/10</p>
-                <p><strong>Tỷ lệ hoàn thành:</strong> <span id="end-prog"></span>%</p>
-                <p><strong>Nguyên nhân cốt lõi:</strong> Sự kết hợp của lỗ hổng hệ thống (API thiếu xác thực, hardcode DB) và thiếu nhận thức con người (chia sẻ Public, dùng thiết bị cá nhân).</p>
-                <br>
-                <p id="end-desc" class="text-warn"></p>
-                <br>
-                <p><strong>Bài học bảo mật:</strong> Dữ liệu cá nhân phải được áp dụng nguyên tắc "Least Privilege" (Đặc quyền tối thiểu), mã hóa ở cấp độ Database, và tuân thủ chặt chẽ pháp luật về Bảo vệ Dữ liệu Cá nhân (NĐ 13/2023/NĐ-CP).</p>
+            <div style="line-height: 1.8; margin-bottom: 30px;">
+                <p><strong>Hiệu suất thu thập:</strong> <span id="end-ev-count">0</span>/5 Chứng cứ gốc.</p>
+                <div id="end-desc" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-left: 3px solid var(--accent-cyan);"></div>
             </div>
             
-            <button class="btn btn-primary" onclick="location.reload()">Khởi động lại mô phỏng</button>
+            <button class="btn btn-primary" style="width:100%" onclick="location.reload()">Bắt đầu lại</button>
         </div>
     </div>
 
-    <!-- MODALS -->
-    <!-- Action Modal (Evidence/Interview) -->
     <div class="modal-overlay" id="action-modal">
         <div class="modal-content">
-            <h3 class="modal-title" id="action-title">Tiêu đề</h3>
-            <p class="modal-body" id="action-desc">Mô tả</p>
-            <div class="modal-actions" id="action-buttons">
-                <!-- Buttons injected via JS -->
+            <h3 class="modal-title" id="action-title" style="color: var(--accent-cyan); margin-bottom: 15px; font-size: 1.3rem;">Tiêu đề</h3>
+            <div class="scene-text" id="action-desc">Mô tả hiện trường</div>
+            <div style="display: flex; flex-direction: column; gap: 10px;" id="action-buttons"></div>
+            <button class="btn" style="margin-top: 20px; width:100%; border-color: var(--border-color)" onclick="closeModal('action-modal')">Đóng / Quay lại</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="casefile-modal">
+        <div class="modal-content" style="height: 80vh; display: flex; flex-direction: column;">
+            <h3 style="color: var(--accent-cyan); margin-bottom: 15px;">HỒ SƠ VỤ ÁN: RÒ RỈ DỮ LIỆU ĐH ABC</h3>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('tab-ev')">Chứng cứ</button>
+                <button class="tab-btn" onclick="switchTab('tab-log')">Nhật ký</button>
             </div>
-            <button class="btn" style="margin-top: 15px; width:100%" onclick="closeModal('action-modal')">Đóng</button>
+
+            <div id="tab-ev" class="tab-content active" style="flex:1; overflow-y: auto;">
+                </div>
+
+            <div id="tab-log" class="tab-content" style="flex:1; overflow-y: auto; font-family: var(--font-mono); font-size: 0.9rem;">
+                </div>
+
+            <button class="btn" style="margin-top: 20px; border-color: var(--border-color)" onclick="closeModal('casefile-modal')">Đóng Hồ Sơ</button>
         </div>
     </div>
 
-    <!-- Manual Modal -->
-    <div class="modal-overlay" id="manual-modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Sổ tay Điều tra viên</h3>
-            <p class="modal-body">
-                - <strong>Mục tiêu:</strong> Thu thập chứng cứ, thẩm vấn và tìm ra nguyên nhân.<br>
-                - <strong>Cách chơi:</strong> Chọn các đáp án hợp lý theo góc nhìn của kỹ sư ATTT. Các lựa chọn đúng sẽ tăng Điểm và Độ tin cậy.<br>
-                - <strong>Kiến thức:</strong> Chú ý các thẻ Kiến thức Pháp lý hiện lên, chúng rất quan trọng để ra quyết định cuối cùng.
-            </p>
-            <button class="btn btn-primary" onclick="closeModal('manual-modal')">Đã rõ</button>
-        </div>
-    </div>
-
-    <!-- About Modal -->
-    <div class="modal-overlay" id="about-modal">
-        <div class="modal-content">
-            <h3 class="modal-title">Thông tin Hệ thống</h3>
-            <p class="modal-body">
-                Dự án "DATA LEAK INVESTIGATOR"<br>
-                Engine: Vanilla JS, CSS3, HTML5.<br>
-                Mục đích: Giáo dục nhận thức về Bảo vệ dữ liệu cá nhân trong môi trường doanh nghiệp/trường học.
-            </p>
-            <button class="btn btn-primary" onclick="closeModal('about-modal')">Đóng</button>
-        </div>
-    </div>
-
-    <!-- Knowledge Toast -->
-    <div id="knowledge-toast">
-        <div class="toast-title">🔔 TRÍCH XUẤT LUẬT BẢO VỆ DỮ LIỆU</div>
-        <div id="knowledge-text">Nội dung</div>
-    </div>
-
-    <!-- AUDIO SYSTEM (Synthesized Web Audio API) -->
     <script>
-        // Game State
-        const state = {
-            score: 0,
-            evidenceFound: 0,
-            progress: 0,
-            confidence: 0,
-            currentChapter: 0,
-            soundEnabled: true,
-            analyzedEvidences: new Set(),
-            interviewedSuspects: new Set()
+        // --- DATA LAYER ---
+        const gameState = {
+            evidencesFound: new Set(),
+            locationsVisited: new Set(),
+            suspectsInterviewed: new Set(),
+            timelineLogs: [],
+            score: 0
         };
 
-        // Audio Context Setup (Generated sounds to avoid external files)
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
-
-        function initAudio() {
-            if (!audioCtx) audioCtx = new AudioContext();
-        }
-
-        function playTone(freq, type, duration, vol=0.1) {
-            if (!state.soundEnabled) return;
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
-            osc.stop(audioCtx.currentTime + duration);
-        }
-
-        const sfx = {
-            click: () => playTone(600, 'square', 0.1),
-            hover: () => playTone(300, 'sine', 0.05, 0.05),
-            success: () => { playTone(500, 'triangle', 0.1); setTimeout(() => playTone(800, 'triangle', 0.2), 100); },
-            error: () => playTone(200, 'sawtooth', 0.3),
-            alert: () => playTone(900, 'square', 0.5)
+        const dbEvidences = {
+            E01: { id: "E01", title: "File Excel Sinh Viên", desc: "Tên file: DanhSachSinhVien_2026.xlsx. Chứa 5000 records (SĐT, Email). Người tạo: Nguyễn Văn A (Phòng Đào tạo)." },
+            E02: { id: "E02", title: "Lỗ hổng Google Drive", desc: "Thư mục Drive nội bộ bị thiết lập 'Anyone with the link can view'. Dữ liệu bị phơi bày công khai." },
+            E03: { id: "E03", title: "Lỗi phân quyền Server", desc: "Hệ thống TT CNTT dùng chung một tài khoản Admin. Không có audit log ghi nhận ai truy cập." },
+            E04: { id: "E04", title: "API Endpoint hở", desc: "Website trường có chức năng tra cứu sinh viên qua API, nhưng thiếu cơ chế xác thực Token (Broken Auth)." },
+            E05: { id: "E05", title: "Log Mạng Cá Nhân", desc: "Log mạng ghi nhận nhân viên phòng CTSV gửi file danh sách qua hệ thống Gmail cá nhân ngoài luồng bảo mật." }
         };
 
-        function toggleSound() {
-            state.soundEnabled = !state.soundEnabled;
-            document.getElementById('btn-sound').innerText = state.soundEnabled ? '🔊 SOUND ON' : '🔇 SOUND OFF';
-        }
-
-        // Data Definitions
-        const evidences = [
-            { id: 1, title: "DanhSachSinhVien_2026.xlsx", icon: "☁️", desc: "File bảng tính nằm trên Google Drive nội bộ của trường.", 
-              options: [
-                  { text: "Kiểm tra quyền chia sẻ file", points: 5, log: "Phát hiện file đặt ở chế độ 'Anyone with the link can view'.", law: "Dữ liệu cá nhân không được chia sẻ công khai khi chưa có biện pháp bảo vệ và sự đồng ý của chủ thể." },
-                  { text: "Tải file về phân tích format", points: 0, log: "Chỉ là file Excel bình thường. Bỏ lỡ manh mối quyền truy cập." }
-              ]},
-            { id: 2, title: "Email Outbound Log", icon: "📧", desc: "Log hệ thống mail ghi nhận một nhân viên tự gửi file dữ liệu sang tài khoản Gmail cá nhân.", 
-              options: [
-                  { text: "Cảnh báo vi phạm quy trình", points: 5, log: "Vi phạm nguyên tắc quản lý thiết bị đầu cuối. Chuyển dữ liệu ra ngoài network an toàn.", law: "Tổ chức phải kiểm soát luồng dữ liệu, cấm chuyển dữ liệu nội bộ ra môi trường cá nhân không được kiểm soát." },
-                  { text: "Bỏ qua, có thể họ làm việc tại nhà", points: 0, log: "Việc xử lý dữ liệu nhạy cảm trên thiết bị cá nhân tạo ra rủi ro rất lớn." }
-              ]},
-            { id: 3, title: "API Tra cứu Sinh viên", icon: "🌐", desc: "Tính năng tra cứu trên website trường gọi API backend trả về thông tin sinh viên.", 
-              options: [
-                  { text: "Kiểm tra xác thực (Authentication) API", points: 5, log: "Phát hiện API Endpoint không yêu cầu Access Token, cho phép cào (scrape) toàn bộ dữ liệu.", law: "Hệ thống xử lý dữ liệu phải tích hợp các biện pháp kỹ thuật bảo mật như phân quyền, xác thực." },
-                  { text: "Kiểm tra giao diện CSS", points: 0, log: "Giao diện không liên quan đến rò rỉ dữ liệu backend." }
-              ]},
-            { id: 4, title: "Source code CMS", icon: "💻", desc: "Trang web quản lý nội dung của phòng ban được code bằng PHP từ 5 năm trước.", 
-              options: [
-                  { text: "Quét lỗ hổng SQL Injection", points: 5, log: "Phát hiện lỗ hổng SQLi cơ bản, hacker có thể đã dump toàn bộ bảng 'nguoi_dung'.", law: "Trách nhiệm của tổ chức là phải thường xuyên rà soát, đánh giá an toàn hệ thống thông tin." },
-                  { text: "Kiểm tra tốc độ tải trang", points: 0, log: "Tốc độ tải trang không liên quan đến rò rỉ dữ liệu." }
-              ]},
-            { id: 5, title: "USB Thực tập sinh", icon: "💾", desc: "Một USB cá nhân của thực tập sinh cắm vào máy trạm của phòng Đào tạo.", 
-              options: [
-                  { text: "Kiểm tra phần mềm DLP (Data Loss Prevention)", points: 5, log: "Hệ thống máy trạm không cài đặt DLP chặn sao chép dữ liệu ra USB.", law: "Cần áp dụng biện pháp kỹ thuật quản lý vật lý và logic đối với thiết bị lưu trữ di động." },
-                  { text: "Xóa sạch USB", points: 0, log: "Phá hủy chứng cứ quan trọng!" }
-              ]},
-            { id: 6, title: "Bàn làm việc Phòng CTSV", icon: "📄", desc: "Bản in danh sách học bổng kèm đầy đủ thông tin cá nhân để trên bàn qua đêm.", 
-              options: [
-                  { text: "Ghi nhận vi phạm Clean Desk Policy", points: 5, log: "Bản in vật lý cũng là một hình thức xử lý dữ liệu, dễ dàng bị chụp lại.", law: "Bảo vệ dữ liệu không chỉ ở không gian số mà còn bao gồm cả tài liệu vật lý." },
-                  { text: "Thu dọn giúp nhân viên", points: 0, log: "Không giải quyết được vấn đề quy trình." }
-              ]},
-            { id: 7, title: "Github Repository", icon: "🐙", desc: "Mã nguồn đồ án web quản lý phòng của sinh viên public trên Github.", 
-              options: [
-                  { text: "Tìm kiếm thông tin kết nối Database", points: 5, log: "Sinh viên đã hardcode User/Pass của Database thật vào file config public.", law: "Thông tin xác thực hệ thống chứa dữ liệu cá nhân phải được mã hóa và bảo mật." },
-                  { text: "Clone code về xem thử", points: 0, log: "Không phát hiện được rủi ro bảo mật." }
-              ]},
-            { id: 8, title: "Ổ cứng Backup", icon: "🖲️", desc: "Ổ cứng chứa file backup định kỳ cơ sở dữ liệu PostgreSQL của trường.", 
-              options: [
-                  { text: "Kiểm tra tình trạng mã hóa", points: 5, log: "Ổ cứng backup chứa text thuần (plaintext), không được mã hóa.", law: "Dữ liệu cá nhân ở trạng thái lưu trữ tĩnh (Data at Rest) cần được mã hóa." },
-                  { text: "Cắm thử xem còn chạy không", points: 0, log: "Thao tác không chuyên nghiệp, có thể làm hỏng backup." }
-              ]},
-            { id: 9, title: "Tài khoản Quản trị", icon: "🔑", desc: "Tài khoản admin hệ thống phân quyền của ứng dụng nội bộ.", 
-              options: [
-                  { text: "Kiểm tra chính sách Mật khẩu & 2FA", points: 5, log: "Admin dùng mật khẩu mặc định (admin123) và không bật xác thực 2 lớp.", law: "Tài khoản có quyền truy cập dữ liệu lớn phải áp dụng xác thực đa yếu tố." },
-                  { text: "Thử đăng nhập bằng mật khẩu '123456'", points: 0, log: "Sai phương pháp điều tra." }
-              ]},
-            { id: 10, title: "Log Mạng (Firewall)", icon: "🔥", desc: "Log lưu lượng mạng xuất ra từ server Database trong tuần qua.", 
-              options: [
-                  { text: "Phân tích bất thường lưu lượng (Anomaly Detection)", points: 5, log: "Phát hiện lưu lượng truy xuất data tăng đột biến vào 2h sáng từ IP lạ.", law: "Hệ thống cần có khả năng giám sát và cảnh báo sự cố rò rỉ theo thời gian thực." },
-                  { text: "Khởi động lại Firewall", points: 0, log: "Mất log hệ thống quan trọng!" }
-              ]}
-        ];
-
-        const suspects = [
-            { id: 1, name: "NV Phòng Đào Tạo", role: "Quản lý hồ sơ", quote: "Tôi chỉ gửi file Excel cho sếp duyệt qua Zalo, sao lại lộ được?", 
-              options: [
-                  { text: "Zalo có phải kênh thông tin nội bộ bảo mật được phê duyệt?", points: 4, log: "Phát hiện nhân viên sử dụng ứng dụng chat cá nhân (shadow IT) để truyền file công việc." },
-                  { text: "Chắc do sếp bạn làm lộ rồi.", points: 0, log: "Kết luận vội vàng, không căn cứ." }
-              ]},
-            { id: 2, name: "NV Phòng CTSV", role: "Công tác sinh viên", quote: "Tạo link Google Drive để 'Public' cho sinh viên tải form tiện hơn mà.", 
-              options: [
-                  { text: "Ai hướng dẫn bạn cấu hình quyền này?", points: 4, log: "Nhân viên tự làm, cho thấy trường không có quy trình hướng dẫn chuẩn mực." },
-                  { text: "Bạn làm vậy là vi phạm pháp luật!", points: 0, log: "Chưa mang tính chất điều tra nguyên nhân." }
-              ]},
-            { id: 3, name: "Quản trị hệ thống", role: "Trung tâm CNTT", quote: "Sếp bảo làm nhanh API tra cứu lên web, không cấp budget làm Authentication.", 
-              options: [
-                  { text: "Bạn có cảnh báo rủi ro (Risk Assessment) bằng văn bản không?", points: 4, log: "Sysadmin đã cảnh báo nhưng Ban quản lý phớt lờ vì áp lực tiến độ. Lỗi quản trị." },
-                  { text: "Lập trình viên dở mới không biết làm Auth.", points: 0, log: "Thiếu khách quan." }
-              ]},
-            { id: 4, name: "Thực tập sinh IT", role: "Hỗ trợ kỹ thuật", quote: "Em tải bản backup Database về máy laptop cá nhân làm đồ án cuối khóa.", 
-              options: [
-                  { text: "Máy cá nhân của em có mã hóa ổ cứng và cài Anti-Virus không?", points: 4, log: "Laptop sinh viên bị nhiễm malware đánh cắp dữ liệu, trực tiếp đẩy DB lên mạng." },
-                  { text: "Em giỏi đấy, dùng tool gì dump DB?", points: 0, log: "Sai trọng tâm." }
-              ]},
-            { id: 5, name: "Trưởng ban CNTT", role: "Quản lý cấp cao", quote: "Chúng tôi coi trọng bảo mật, nhưng không đủ nhân lực giám sát.", 
-              options: [
-                  { text: "Trường đã ban hành Quy chế bảo vệ dữ liệu theo Nghị định mới chưa?", points: 4, log: "Trưởng ban thừa nhận chưa xây dựng và ban hành SOP/Quy chế xử lý dữ liệu." },
-                  { text: "Tại sao không thuê thêm người?", points: 0, log: "Câu hỏi quá chung chung." }
-              ]}
-        ];
-
-        // Core Functions
-        function addTerminalLog(msg) {
-            const term = document.getElementById('terminal-log');
-            if(term) {
-                term.innerHTML += `<p>> ${msg}</p>`;
-                term.scrollTop = term.scrollHeight;
+        const dbLocations = [
+            { 
+                id: "loc_daotao", name: "Phòng Đào tạo", icon: "📁",
+                scene: "Bạn truy cập vào máy chủ tệp tin nội bộ của Phòng Đào tạo. Có hàng ngàn file tài liệu hỗn độn.",
+                choices: [
+                    { text: "Lọc tìm file theo metadata trùng khớp với dữ liệu bị lộ", evidence: "E01", log: "Rà soát metadata phát hiện file gốc DanhSachSinhVien_2026.xlsx do Nguyễn Văn A tạo." },
+                    { text: "Tải toàn bộ file về máy cá nhân phân tích", evidence: null, log: "Thao tác tải về tốn nhiều thời gian và làm nhiễu chứng cứ. Không thu được kết quả." }
+                ]
+            },
+            {
+                id: "loc_drive", name: "Google Drive Nội bộ", icon: "☁️",
+                scene: "Ban quản trị cung cấp link thư mục Drive dùng chung của các phòng ban.",
+                choices: [
+                    { text: "Kiểm tra thuộc tính chia sẻ (Sharing Settings)", evidence: "E02", log: "Phát hiện thư mục đang để chế độ PUBLIC. Bất kỳ ai cũng có thể truy cập." },
+                    { text: "Kiểm tra lịch sử chỉnh sửa văn bản", evidence: null, log: "Có quá nhiều lịch sử chỉnh sửa, không xác định được luồng rò rỉ chính." }
+                ]
+            },
+            {
+                id: "loc_cntt", name: "Trung tâm CNTT", icon: "🖥️",
+                scene: "Đăng nhập vào hệ thống quản lý Database Server PostgreSQL.",
+                choices: [
+                    { text: "Kiểm tra bảng phân quyền User (RBAC)", evidence: "E03", log: "Phát hiện các phòng ban dùng chung tài khoản 'admin_db' để truy xuất dữ liệu." },
+                    { text: "Khởi động lại dịch vụ Firewall", evidence: null, log: "Việc khởi động lại làm mất một số cache log quan trọng. Không tìm thấy manh mối." }
+                ]
+            },
+            {
+                id: "loc_web", name: "Website Trường", icon: "🌐",
+                scene: "Giao diện website có một ô nhập MSSV để tra cứu điểm.",
+                choices: [
+                    { text: "Thử cào dữ liệu qua API (API Fuzzing)", evidence: "E04", log: "Endpoint trả về toàn bộ Object Sinh viên mà không kiểm tra Auth Token." },
+                    { text: "Quét lỗ hổng SQL Injection ở thanh tìm kiếm", evidence: null, log: "Hệ thống đã filter chống SQLi khá tốt. Không tìm thấy lỗ hổng ở giao diện này." }
+                ]
+            },
+            {
+                id: "loc_ctsv", name: "Phòng CTSV", icon: "👥",
+                scene: "Máy trạm của nhân viên phụ trách Học bổng đang mở khóa.",
+                choices: [
+                    { text: "Quét lịch sử Outbound Traffic (Luồng ra)", evidence: "E05", log: "Truy vết Outbound cho thấy file danh sách được đính kèm gửi qua Gmail cá nhân." },
+                    { text: "Kiểm tra thùng rác (Recycle Bin)", evidence: null, log: "Thùng rác trống rỗng." }
+                ]
             }
+        ];
+
+        const dbSuspects = [
+            {
+                id: "sus_daotao", name: "Nguyễn Văn A (Phòng Đào tạo)", role: "Người tạo dữ liệu gốc",
+                reqEvidence: "E01", fallback: "Tôi chỉ làm việc với sổ sách vật lý, không rành máy tính.",
+                clueText: "Chứng cứ E01 cho thấy bạn là người tạo file Excel. Bạn đã gửi nó cho ai?",
+                successLog: "Lời khai: Tôi tạo file và up lên Drive nội bộ để phòng CTSV duyệt học bổng. Tôi không biết cách phân quyền."
+            },
+            {
+                id: "sus_ctsv", name: "Trần Thị B (Phòng CTSV)", role: "Quản lý danh sách SV",
+                reqEvidence: "E05", fallback: "Tôi không liên quan, tôi chỉ dùng web trường để tra cứu.",
+                clueText: "Hệ thống (E05) ghi nhận bạn gửi file qua Gmail cá nhân. Lý do là gì?",
+                successLog: "Lời khai: Hệ thống mail trường lỗi, sếp giục gấp nên tôi đành dùng Gmail gửi cho đối tác. Tôi sơ suất."
+            },
+            {
+                id: "sus_admin", name: "Lê Văn C (Quản trị Hệ thống)", role: "IT Admin",
+                reqEvidence: "E04", fallback: "Hệ thống đang chạy ổn định, không có ai báo cáo lỗi gì.",
+                clueText: "API tra cứu trên Web (E04) không yêu cầu xác thực. Ai đã deploy code này?",
+                successLog: "Lời khai: API đó phục vụ tra cứu nhanh, Ban giám hiệu không duyệt kinh phí làm hệ thống Auth phức tạp nên tôi để mở."
+            }
+        ];
+
+        // --- CORE LOGIC ---
+        function writeLog(msg) {
+            const time = new Date().toLocaleTimeString('vi-VN');
+            gameState.timelineLogs.push(`[${time}] ${msg}`);
+            renderCaseFile();
         }
 
-        function updateHUD() {
-            document.getElementById('hud-score').innerText = state.score;
-            document.getElementById('hud-evidence').innerText = `${state.evidenceFound}/10`;
-            document.getElementById('hud-confidence').innerText = `${state.confidence}%`;
-            document.getElementById('progress-bar').style.width = `${state.progress}%`;
+        function renderHUD() {
+            document.getElementById('hud-evidence').innerText = `${gameState.evidencesFound.size}/5`;
         }
 
-        function addScore(points) {
-            state.score += points;
-            state.confidence = Math.min(100, state.confidence + (points * 1.5));
-            updateHUD();
+        function startGame() {
+            document.getElementById('hud').classList.remove('hide');
+            writeLog("Mở hồ sơ điều tra vụ án Rò rỉ dữ liệu Đại học ABC.");
+            switchScreen('stage-1');
+            renderLocations();
+            renderCaseFile();
         }
 
-        function updateProgress(val) {
-            state.progress = Math.min(100, val);
-            updateHUD();
-        }
-
-        function showKnowledge(text) {
-            sfx.alert();
-            const toast = document.getElementById('knowledge-toast');
-            document.getElementById('knowledge-text').innerText = text;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 6000);
-        }
-
-        // Screen Navigation
-        function hideAllScreens() {
+        function switchScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        }
-
-        function showScreen(id) {
-            hideAllScreens();
             document.getElementById(id).classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function showModal(id) {
-            sfx.click();
-            document.getElementById(id).classList.add('active');
-        }
-
-        function closeModal(id) {
-            sfx.click();
-            document.getElementById(id).classList.remove('active');
-        }
-
-        // Game Flow Methods
-        function startGame() {
-            sfx.success();
-            document.getElementById('hud').classList.remove('hide');
-            document.getElementById('progress-container').classList.remove('hide');
-            state.progress = 10;
-            updateHUD();
-            showScreen('chapter-1');
-        }
-
-        function selectLocation(loc) {
-            sfx.success();
-            alert(`[HỆ THỐNG] Đã khởi tạo truy vết bắt đầu từ: ${loc}. Chuyển sang thu thập chứng cứ.`);
-            state.progress = 20;
-            updateHUD();
-            buildEvidenceBoard();
-            showScreen('chapter-2');
-        }
-
-        function buildEvidenceBoard() {
-            const board = document.getElementById('evidence-board');
+        // --- STAGE 1: LOCATIONS ---
+        function renderLocations() {
+            const board = document.getElementById('locations-board');
             board.innerHTML = '';
-            evidences.forEach(ev => {
-                const card = document.createElement('div');
-                card.className = `card ${state.analyzedEvidences.has(ev.id) ? 'solved' : ''}`;
-                card.id = `ev-${ev.id}`;
-                card.innerHTML = `
-                    <span class="card-icon">${ev.icon}</span>
-                    <div class="card-title">Mã: EVD-${ev.id.toString().padStart(3,'0')}</div>
-                    <p>${ev.title}</p>
-                `;
-                card.onclick = () => openEvidenceOption(ev.id);
-                board.appendChild(card);
+            dbLocations.forEach(loc => {
+                const isVis = gameState.locationsVisited.has(loc.id);
+                board.innerHTML += `
+                    <div class="card ${isVis ? 'visited' : ''}" onclick="exploreLocation('${loc.id}')">
+                        <span class="card-icon">${loc.icon}</span>
+                        <div class="card-title">${loc.name}</div>
+                    </div>`;
             });
+
+            if(gameState.locationsVisited.size === dbLocations.length) {
+                document.getElementById('btn-to-interviews').classList.remove('hide');
+            }
         }
 
-        function openEvidenceOption(id) {
-            sfx.click();
-            if(state.analyzedEvidences.has(id)) return;
-            const ev = evidences.find(e => e.id === id);
-            document.getElementById('action-title').innerText = `CHỨNG CỨ: ${ev.title}`;
-            document.getElementById('action-desc').innerText = ev.desc;
+        function exploreLocation(id) {
+            if(gameState.locationsVisited.has(id)) {
+                alert("Bạn đã khám nghiệm địa điểm này rồi. Hãy mở Hồ sơ vụ án để xem lại.");
+                return;
+            }
             
-            const btnContainer = document.getElementById('action-buttons');
-            btnContainer.innerHTML = '';
-            ev.options.forEach((opt, index) => {
+            const loc = dbLocations.find(l => l.id === id);
+            document.getElementById('action-title').innerText = `RÀ SOÁT: ${loc.name}`;
+            document.getElementById('action-desc').innerText = loc.scene;
+            
+            const btns = document.getElementById('action-buttons');
+            btns.innerHTML = '';
+            loc.choices.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'btn';
                 btn.innerText = opt.text;
-                btn.onclick = () => handleEvidenceChoice(ev.id, index);
-                btnContainer.appendChild(btn);
+                btn.onclick = () => handleChoice(id, opt);
+                btns.appendChild(btn);
             });
-            showModal('action-modal');
+            
+            openModal('action-modal');
         }
 
-        function handleEvidenceChoice(evId, optIndex) {
+        function handleChoice(locId, opt) {
             closeModal('action-modal');
-            const ev = evidences.find(e => e.id === evId);
-            const opt = ev.options[optIndex];
+            gameState.locationsVisited.add(locId);
+            writeLog(`Khám nghiệm ${dbLocations.find(l=>l.id===locId).name}: ${opt.log}`);
             
-            state.analyzedEvidences.add(evId);
-            document.getElementById(`ev-${evId}`).classList.add('solved');
-            
-            addTerminalLog(`Phân tích EVD-${evId}: ${opt.log}`);
-            
-            if(opt.points > 0) {
-                sfx.success();
-                addScore(opt.points);
-                state.evidenceFound++;
-                if(opt.law) setTimeout(() => showKnowledge(opt.law), 500);
+            if(opt.evidence) {
+                gameState.evidencesFound.add(opt.evidence);
+                alert(`[PHÁT HIỆN CHỨNG CỨ MỚI: ${opt.evidence}]\n\n${dbEvidences[opt.evidence].title}`);
             } else {
-                sfx.error();
+                alert(`[KHÔNG CÓ KẾT QUẢ]\n\n${opt.log}`);
             }
             
-            updateProgress(20 + (state.evidenceFound * 3));
-            
-            if(state.evidenceFound >= 7) {
-                document.getElementById('btn-next-chap3').classList.remove('hide');
-            }
+            renderHUD();
+            renderLocations();
         }
 
-        function nextChapter(chapNum) {
-            sfx.success();
-            if(chapNum === 3) {
-                buildInterviewBoard();
-                updateProgress(50);
-                showScreen('chapter-3');
-            } else if (chapNum === 4) {
-                updateProgress(75);
-                showScreen('chapter-4');
-            }
+        // --- STAGE 2: INTERVIEWS ---
+        function goToInterviews() {
+            writeLog("Chuyển sang giai đoạn Phỏng vấn nhân sự.");
+            switchScreen('stage-2');
+            renderSuspects();
         }
 
-        function buildInterviewBoard() {
-            const board = document.getElementById('interview-board');
+        function renderSuspects() {
+            const board = document.getElementById('suspects-board');
             board.innerHTML = '';
-            suspects.forEach(s => {
-                const card = document.createElement('div');
-                card.className = `card ${state.interviewedSuspects.has(s.id) ? 'solved' : ''}`;
-                card.id = `susp-${s.id}`;
-                card.innerHTML = `
-                    <span class="card-icon">👤</span>
-                    <div class="card-title">${s.name}</div>
-                    <p class="text-muted" style="font-size:0.8rem; margin-bottom:10px;">${s.role}</p>
-                    <p style="font-style:italic;">"${s.quote}"</p>
-                `;
-                card.onclick = () => openInterviewOption(s.id);
-                board.appendChild(card);
+            dbSuspects.forEach(sus => {
+                const isInt = gameState.suspectsInterviewed.has(sus.id);
+                board.innerHTML += `
+                    <div class="card ${isInt ? 'visited' : ''}" onclick="interviewSuspect('${sus.id}')">
+                        <span class="card-icon">👤</span>
+                        <div class="card-title">${sus.name}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted)">${sus.role}</div>
+                    </div>`;
             });
+            document.getElementById('btn-to-analysis').classList.remove('hide');
         }
 
-        function openInterviewOption(id) {
-            sfx.click();
-            if(state.interviewedSuspects.has(id)) return;
-            const s = suspects.find(x => x.id === id);
-            document.getElementById('action-title').innerText = `THẨM VẤN: ${s.name}`;
-            document.getElementById('action-desc').innerText = `Chức vụ: ${s.role}\n\nLời khai: "${s.quote}"\n\nBạn sẽ đặt câu hỏi gì?`;
-            
-            const btnContainer = document.getElementById('action-buttons');
-            btnContainer.innerHTML = '';
-            s.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'btn';
-                btn.innerText = opt.text;
-                btn.onclick = () => handleInterviewChoice(s.id, index);
-                btnContainer.appendChild(btn);
-            });
-            showModal('action-modal');
-        }
+        function interviewSuspect(id) {
+            if(gameState.suspectsInterviewed.has(id)) return;
 
-        function handleInterviewChoice(susId, optIndex) {
-            closeModal('action-modal');
-            const s = suspects.find(x => x.id === susId);
-            const opt = s.options[optIndex];
+            const sus = dbSuspects.find(s => s.id === id);
+            document.getElementById('action-title').innerText = `THẨM VẤN: ${sus.name}`;
             
-            state.interviewedSuspects.add(susId);
-            document.getElementById(`susp-${susId}`).classList.add('solved');
+            const hasEv = gameState.evidencesFound.has(sus.reqEvidence);
             
-            if(opt.points > 0) {
-                sfx.success();
-                addScore(opt.points);
-                alert(`[LỜI KHAI] ${opt.log}`);
+            let html = `<p style="margin-bottom:15px; color:var(--text-muted)">Hệ thống đối chiếu hồ sơ...</p>`;
+            
+            if(hasEv) {
+                html += `<div style="color:var(--accent-cyan); font-weight:bold; margin-bottom:10px;">> ${sus.clueText}</div>`;
+                html += `<div style="border-left: 3px solid var(--accent-green); padding-left: 10px; color:var(--text-main)">${sus.successLog}</div>`;
+                writeLog(`Thẩm vấn ${sus.name}: Thu được lời khai quan trọng.`);
             } else {
-                sfx.error();
-                alert(`[SAI LẦM] ${opt.log}`);
+                html += `<div style="color:var(--accent-warn); margin-bottom:10px;">> Bạn chưa có đủ chứng cứ để chất vấn nhân vật này.</div>`;
+                html += `<div style="border-left: 3px solid var(--border-color); padding-left: 10px; color:var(--text-muted)">${sus.fallback}</div>`;
+                writeLog(`Thẩm vấn ${sus.name}: Không có kết quả do thiếu chứng cứ.`);
             }
-            
-            if(state.interviewedSuspects.size >= 5) {
-                document.getElementById('btn-next-chap4').classList.remove('hide');
-            }
+
+            document.getElementById('action-desc').innerHTML = html;
+            document.getElementById('action-buttons').innerHTML = ''; // no further choices
+            gameState.suspectsInterviewed.add(id);
+            renderSuspects();
+            openModal('action-modal');
         }
 
-        function submitAnalysis() {
-            const checks = document.querySelectorAll('#analysis-form input:checked');
-            if(checks.length === 0) { alert("Vui lòng chọn ít nhất 1 nguyên nhân."); return; }
-            
-            sfx.success();
-            let correctCount = 0;
-            // Correct options: 1 (Drive), 3 (API), 4 (Email/USB), 6 (SOP), 7 (Hardcoded DB)
-            const correctIds = ["1", "3", "4", "6", "7"];
-            checks.forEach(c => {
-                if(correctIds.includes(c.value)) correctCount++;
-                else correctCount--; // penalty for wrong guess
-            });
-            
-            const points = Math.max(0, correctCount * 2);
-            addScore(points);
-            updateProgress(90);
-            
-            alert(`Hệ thống AI đối chiếu: Bạn đã xác định được một số nguyên nhân chính xác. Điểm phân tích: +${points}`);
-            showScreen('chapter-5');
+        function goToAnalysis() {
+            writeLog("Bắt đầu lập báo cáo tổng hợp cuối cùng.");
+            switchScreen('stage-3');
         }
 
+        // --- ENDING ---
         function finishGame() {
-            const radio = document.querySelector('input[name="decision"]:checked');
-            if(!radio) { alert("Vui lòng chọn một phương án giải quyết."); return; }
+            const checkedEvs = Array.from(document.querySelectorAll('#analysis-form input:checked')).map(el => el.value);
+            const decisionRadio = document.querySelector('input[name="decision"]:checked');
             
-            sfx.success();
-            updateProgress(100);
-            
-            if(radio.value === 'good') addScore(20);
-            else if(radio.value === 'avg') addScore(10);
-            else addScore(0);
-            
+            if(!decisionRadio) {
+                alert("Vui lòng chọn Quyết định Xử lý cuối cùng."); return;
+            }
+
             document.getElementById('hud').classList.add('hide');
-            document.getElementById('progress-container').classList.add('hide');
+            const evCount = gameState.evidencesFound.size;
+            document.getElementById('end-ev-count').innerText = evCount;
             
-            // Set Ending Text
             const endTitle = document.getElementById('end-title');
             const endDesc = document.getElementById('end-desc');
-            document.getElementById('end-score').innerText = `ĐIỂM: ${state.score}/100`;
-            document.getElementById('end-ev').innerText = state.evidenceFound;
-            document.getElementById('end-prog').innerText = state.progress;
-            
-            if(state.score >= 80) {
-                endTitle.innerText = "CHUYÊN GIA ĐIỀU TRA DỮ LIỆU";
-                endTitle.className = "text-green";
-                endDesc.innerText = "Bạn đã xác định xuất sắc nguồn rò rỉ từ sự lỏng lẻo của API, mã nguồn CMS và cả các lỗ hổng quy trình con người. Biện pháp xử lý của bạn minh bạch, chuẩn mực và đúng luật.";
-            } else if (state.score >= 50) {
-                endTitle.innerText = "ĐIỀU TRA VIÊN TIỀM NĂNG";
-                endTitle.className = "text-warn";
-                endDesc.innerText = "Bạn tìm ra được một phần bức tranh rò rỉ, nhưng giải pháp của bạn chưa giải quyết triệt để rủi ro cốt lõi hoặc thiếu sự minh bạch cần thiết với nạn nhân.";
-            } else {
-                endTitle.innerText = "VỤ ÁN CHƯA ĐƯỢC GIẢI QUYẾT TỐT";
+
+            // Evaluation Logic
+            const requiredEvs = ["E02", "E04", "E05"]; // Real roots based on game data
+            const missingAnalysis = requiredEvs.some(e => !checkedEvs.includes(e));
+
+            if(evCount < 4) {
+                // Not enough evidence -> Bad ending
+                endTitle.innerText = "ĐIỀU TRA THẤT BẠI";
                 endTitle.className = "text-red";
-                endDesc.innerText = "Bạn đã bỏ sót quá nhiều chứng cứ quan trọng. Các rủi ro như SQL Injection, API vô danh và bảo mật vật lý vẫn còn đó. Hệ thống của trường vẫn đối mặt với nguy cơ rò rỉ lần 2.";
+                endDesc.innerHTML = "Bạn đã bỏ sót quá nhiều manh mối kỹ thuật ở hiện trường (< 80%). Những kết luận bạn đưa ra thiếu tính xác thực và không thuyết phục được Ban Giám Hiệu. Sự cố rò rỉ vẫn tiếp diễn do lỗ hổng chưa được vá.";
+            } else if (decisionRadio.value === 'bad' || missingAnalysis) {
+                // Found evidence but chose to hide it or analyzed wrong -> Medium ending
+                endTitle.innerText = "CHƯA XỬ LÝ TRIỆT ĐỂ";
+                endTitle.className = "text-warn";
+                endDesc.innerHTML = "Tuy bạn tìm ra được các chứng cứ quan trọng, nhưng việc xác định nguyên nhân hoặc phương án xử lý của bạn chưa đạt tiêu chuẩn. Việc che giấu sự cố hoặc đổ lỗi cục bộ vi phạm nghiêm trọng luật bảo vệ dữ liệu, gây rủi ro pháp lý lớn cho nhà trường.";
+            } else {
+                // Found evidence, correct analysis, good decision -> Good ending
+                endTitle.innerText = "CHUYÊN GIA ĐIỀU TRA";
+                endTitle.className = "text-green";
+                endDesc.innerHTML = "Tuyệt vời! Dựa trên chứng cứ vững chắc, bạn đã vạch trần các lỗ hổng hệ thống (API, Drive) và sai phạm quy trình (chuyển data qua web cá nhân). Phương án minh bạch và khắc phục toàn diện của bạn giúp nhà trường kiểm soát khủng hoảng và bảo vệ quyền lợi sinh viên hợp pháp.";
             }
-            
-            showScreen('ending-screen');
+
+            switchScreen('ending-screen');
         }
 
-        // Add hover sounds to buttons
-        document.addEventListener('mouseover', e => {
-            if(e.target.tagName === 'BUTTON' || e.target.classList.contains('card')) sfx.hover();
-        });
+        // --- UI & MODALS ---
+        function openCaseFile() {
+            renderCaseFile();
+            openModal('casefile-modal');
+        }
+
+        function renderCaseFile() {
+            // Render Evidences
+            let evHtml = '<div style="margin-bottom: 15px; color: var(--text-muted)">Danh sách các chứng cứ vật lý và kỹ thuật:</div>';
+            for(let i=1; i<=5; i++) {
+                const id = `E0${i}`;
+                const found = gameState.evidencesFound.has(id);
+                evHtml += `
+                    <div class="ev-item">
+                        <div class="ev-status ${found ? 'ev-found' : 'ev-missing'}">${found ? '[✓]' : '[ ]'}</div>
+                        <div>
+                            <div style="font-weight:bold; color: ${found ? 'var(--accent-cyan)' : 'var(--text-muted)'}">${id}: ${found ? dbEvidences[id].title : 'Chưa thu thập'}</div>
+                            <div style="font-size:0.85rem; color: var(--text-muted)">${found ? dbEvidences[id].desc : '???'}</div>
+                        </div>
+                    </div>`;
+            }
+            document.getElementById('tab-ev').innerHTML = evHtml;
+
+            // Render Logs
+            let logHtml = '';
+            gameState.timelineLogs.forEach(log => {
+                logHtml += `<div class="timeline-entry">${log}</div>`;
+            });
+            document.getElementById('tab-log').innerHTML = logHtml;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
     </script>
 </body>
 </html>
