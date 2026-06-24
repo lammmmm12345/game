@@ -79,6 +79,7 @@
         .btn:hover { border-color: var(--accent-cyan); box-shadow: 0 0 10px rgba(0,242,254,0.2); background: rgba(0,242,254,0.05); }
         .btn-primary { border-color: var(--accent-cyan); color: var(--accent-cyan); }
         .btn-disabled { opacity: 0.5; pointer-events: none; border-color: var(--border-color); color: var(--text-muted); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 
         /* Grids & Cards */
         .chapter-header { border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 30px; }
@@ -129,6 +130,57 @@
         
         /* Scene text */
         .scene-text { background: #000; color: var(--accent-green); padding: 20px; font-family: var(--font-mono); border: 1px solid #333; margin-bottom: 20px; line-height: 1.6; border-radius: 4px; }
+
+        /* Player Info Form */
+        #player-info-screen { max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; min-height: 80vh; }
+        .form-box { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 6px; padding: 30px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-family: var(--font-mono); color: var(--accent-cyan); font-size: 0.9rem; }
+        .form-group input[type="text"] {
+            width: 100%; padding: 12px 14px; background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-main); border-radius: 4px; font-size: 1rem; font-family: var(--font-sans);
+        }
+        .form-group input[type="text"]:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 6px rgba(0,242,254,0.3); }
+        .form-error { color: var(--accent-red); font-size: 0.85rem; margin-top: 6px; min-height: 1.1em; font-family: var(--font-mono); }
+
+        /* Stats / Leaderboard screens */
+        .stats-title { text-align: center; color: var(--accent-cyan); font-size: 1.6rem; margin-bottom: 25px; letter-spacing: 2px; }
+        .result-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .result-table tr { border-bottom: 1px dashed var(--border-color); }
+        .result-table td { padding: 12px 8px; }
+        .result-table td:first-child { color: var(--text-muted); width: 55%; }
+        .result-table td:last-child { font-weight: bold; text-align: right; color: var(--accent-cyan); }
+
+        .leaderboard-list { list-style: none; counter-reset: rank; margin-bottom: 10px; }
+        .leaderboard-list li {
+            counter-increment: rank; display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 15px; border-bottom: 1px solid var(--border-color); position: relative;
+        }
+        .leaderboard-list li::before {
+            content: counter(rank); display: inline-flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; margin-right: 12px; border-radius: 50%; background: var(--bg-card);
+            border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.85rem;
+        }
+        .leaderboard-list li:nth-child(1)::before { background: var(--accent-warn); color: #000; border-color: var(--accent-warn); }
+        .lb-name { flex: 1; display: flex; align-items: center; }
+        .lb-score { font-family: var(--font-mono); font-weight: bold; color: var(--accent-green); }
+        .lb-me { background: rgba(0,242,254,0.08); border-left: 3px solid var(--accent-cyan); }
+
+        .stat-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 18px; text-align: center; }
+        .stat-card .stat-value { font-family: var(--font-mono); font-size: 1.8rem; color: var(--accent-cyan); display: block; margin-bottom: 5px; }
+        .stat-card .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+
+        .sync-status { text-align: center; padding: 12px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
+        .sync-status.ok { color: var(--accent-green); }
+        .sync-status.err { color: var(--accent-warn); }
+        .spinner {
+            display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border-color);
+            border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-row .btn { flex: 1; }
     </style>
 </head>
 <body>
@@ -143,13 +195,26 @@
         </div>
     </div>
 
-    <div id="main-menu" class="screen active">
-        <h1 class="glitch-title">DATA LEAK INVESTIGATOR</h1>
-        <p style="color: var(--text-muted); font-family: var(--font-mono);">Phần mềm điều tra số & Hệ thống quản lý sự cố dữ liệu</p>
-        <div class="menu-btns">
-            <button class="btn btn-primary" onclick="startGame()">Bắt đầu Điều tra</button>
+    <div id="player-info-screen" class="screen active">
+        <div class="form-box">
+            <h1 class="glitch-title" style="font-size: 2rem; text-align:center;">DATA LEAK INVESTIGATOR</h1>
+            <p style="color: var(--text-muted); font-family: var(--font-mono); text-align:center; margin-bottom: 25px; font-size: 0.85rem;">Vui lòng đăng ký hồ sơ điều tra viên trước khi bắt đầu</p>
+
+            <div class="form-group">
+                <label for="player-name">Họ và tên <span class="text-red">*</span></label>
+                <input type="text" id="player-name" placeholder="Nguyễn Văn A" autocomplete="off" onkeydown="if(event.key==='Enter') trySubmitPlayerInfo()">
+            </div>
+            <div class="form-group">
+                <label for="player-class">Lớp (không bắt buộc)</label>
+                <input type="text" id="player-class" placeholder="VD: 12A1" autocomplete="off" onkeydown="if(event.key==='Enter') trySubmitPlayerInfo()">
+            </div>
+            <div class="form-error" id="player-form-error"></div>
+
+            <button class="btn btn-primary" style="width:100%" onclick="trySubmitPlayerInfo()">Bắt đầu Điều tra</button>
         </div>
     </div>
+
+
 
     <div id="stage-1" class="screen">
         <div class="chapter-header">
@@ -210,10 +275,61 @@
                 <p><strong>Hiệu suất thu thập:</strong> <span id="end-ev-count">0</span>/5 Chứng cứ gốc.</p>
                 <div id="end-desc" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-left: 3px solid var(--accent-cyan);"></div>
             </div>
-            
-            <button class="btn btn-primary" style="width:100%" onclick="location.reload()">Bắt đầu lại</button>
+
+            <button class="btn btn-primary" style="width:100%" onclick="goToDetailedResult()">Xem Thống Kê Chi Tiết >></button>
         </div>
     </div>
+
+    <!-- MÀN HÌNH THỐNG KÊ CUỐI (kết quả cá nhân + gửi Google Sheet) -->
+    <div id="detailed-result-screen" class="screen">
+        <div class="chapter-header">
+            <h2>===== KẾT QUẢ ĐIỀU TRA =====</h2>
+        </div>
+        <div style="background: var(--bg-card); padding: 25px; border: 1px solid var(--border-color); border-radius: 5px; margin-bottom: 20px;">
+            <table class="result-table">
+                <tr><td>Họ tên người chơi</td><td id="res-name">-</td></tr>
+                <tr><td>Lớp</td><td id="res-class">-</td></tr>
+                <tr><td>Điểm điều tra</td><td id="res-score">0</td></tr>
+                <tr><td>Số chứng cứ thu thập được</td><td id="res-evidence">0/5</td></tr>
+                <tr><td>Tỷ lệ hoàn thành</td><td id="res-completion">0%</td></tr>
+                <tr><td>Danh hiệu</td><td id="res-title">-</td></tr>
+                <tr><td>Nguyên nhân đã xác định</td><td id="res-cause">-</td></tr>
+                <tr><td>Thời gian hoàn thành</td><td id="res-time">-</td></tr>
+            </table>
+        </div>
+
+        <div class="sync-status" id="sync-status-box">
+            <span class="spinner"></span> Đang gửi kết quả lên hệ thống...
+        </div>
+
+        <button class="btn btn-primary" style="width:100%" id="btn-view-leaderboard" onclick="goToLeaderboard()" disabled>Xem Bảng Xếp Hạng >></button>
+    </div>
+
+    <!-- MÀN HÌNH BẢNG XẾP HẠNG + THỐNG KÊ TỔNG (phục vụ thuyết trình) -->
+    <div id="leaderboard-screen" class="screen">
+        <div class="chapter-header">
+            <h2>THỐNG KÊ & BẢNG XẾP HẠNG</h2>
+        </div>
+
+        <h3 class="stats-title">TOP NGƯỜI CHƠI</h3>
+        <ol class="leaderboard-list" id="leaderboard-list">
+            <li><span class="lb-name">Đang tải dữ liệu...</span></li>
+        </ol>
+
+        <h3 class="stats-title" style="margin-top: 40px;">THỐNG KÊ PHỤC VỤ BÁO CÁO</h3>
+        <div class="stat-cards-grid" id="overall-stats-grid">
+            <div class="stat-card"><span class="stat-value" id="st-total">-</span><span class="stat-label">Tổng số người chơi</span></div>
+            <div class="stat-card"><span class="stat-value" id="st-avg">-</span><span class="stat-label">Điểm trung bình</span></div>
+            <div class="stat-card"><span class="stat-value" id="st-complete-rate">-</span><span class="stat-label">Tỷ lệ hoàn thành game</span></div>
+            <div class="stat-card"><span class="stat-value" id="st-good-rate">-</span><span class="stat-label">Tỷ lệ kết thúc tốt</span></div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="loadLeaderboardAndStats()">🔄 Làm mới dữ liệu</button>
+            <button class="btn btn-primary" onclick="location.reload()">Bắt đầu lại</button>
+        </div>
+    </div>
+
 
     <div class="modal-overlay" id="action-modal">
         <div class="modal-content">
@@ -246,11 +362,21 @@
     <script>
         // --- DATA LAYER ---
         const gameState = {
+            player: { name: "", className: "" },
+            startTime: null,
             evidencesFound: new Set(),
             locationsVisited: new Set(),
             suspectsInterviewed: new Set(),
             timelineLogs: [],
-            score: 0
+            score: 0,
+            // Dữ liệu được tính khi kết thúc game, dùng để hiển thị + gửi lên Google Sheet
+            result: {
+                endingTitle: "",
+                causeText: "",
+                completionRate: 0,
+                durationText: "",
+                durationSeconds: 0
+            }
         };
 
         const dbEvidences = {
@@ -325,7 +451,28 @@
             }
         ];
 
-        // --- CORE LOGIC ---
+        // --- PLAYER INFO FORM ---
+        function trySubmitPlayerInfo() {
+            const nameInput = document.getElementById('player-name');
+            const classInput = document.getElementById('player-class');
+            const errorBox = document.getElementById('player-form-error');
+
+            const name = nameInput.value.trim();
+            const className = classInput.value.trim();
+
+            if (!name) {
+                errorBox.innerText = "Vui lòng nhập Họ và tên trước khi bắt đầu điều tra.";
+                nameInput.focus();
+                return;
+            }
+
+            errorBox.innerText = "";
+            gameState.player.name = name;
+            gameState.player.className = className || "(Không có)";
+
+            startGame();
+        }
+
         function writeLog(msg) {
             const time = new Date().toLocaleTimeString('vi-VN');
             gameState.timelineLogs.push(`[${time}] ${msg}`);
@@ -337,8 +484,9 @@
         }
 
         function startGame() {
+            gameState.startTime = Date.now();
             document.getElementById('hud').classList.remove('hide');
-            writeLog("Mở hồ sơ điều tra vụ án Rò rỉ dữ liệu Đại học ABC.");
+            writeLog(`Điều tra viên ${gameState.player.name} (Lớp: ${gameState.player.className}) mở hồ sơ điều tra vụ án Rò rỉ dữ liệu Đại học ABC.`);
             switchScreen('stage-1');
             renderLocations();
             renderCaseFile();
@@ -480,25 +628,233 @@
             // Evaluation Logic
             const requiredEvs = ["E02", "E04", "E05"]; // Real roots based on game data
             const missingAnalysis = requiredEvs.some(e => !checkedEvs.includes(e));
+            let endingTier = "good"; // good | medium | bad
 
             if(evCount < 4) {
                 // Not enough evidence -> Bad ending
                 endTitle.innerText = "ĐIỀU TRA THẤT BẠI";
                 endTitle.className = "text-red";
                 endDesc.innerHTML = "Bạn đã bỏ sót quá nhiều manh mối kỹ thuật ở hiện trường (< 80%). Những kết luận bạn đưa ra thiếu tính xác thực và không thuyết phục được Ban Giám Hiệu. Sự cố rò rỉ vẫn tiếp diễn do lỗ hổng chưa được vá.";
+                endingTier = "bad";
             } else if (decisionRadio.value === 'bad' || missingAnalysis) {
                 // Found evidence but chose to hide it or analyzed wrong -> Medium ending
                 endTitle.innerText = "CHƯA XỬ LÝ TRIỆT ĐỂ";
                 endTitle.className = "text-warn";
                 endDesc.innerHTML = "Tuy bạn tìm ra được các chứng cứ quan trọng, nhưng việc xác định nguyên nhân hoặc phương án xử lý của bạn chưa đạt tiêu chuẩn. Việc che giấu sự cố hoặc đổ lỗi cục bộ vi phạm nghiêm trọng luật bảo vệ dữ liệu, gây rủi ro pháp lý lớn cho nhà trường.";
+                endingTier = "medium";
             } else {
                 // Found evidence, correct analysis, good decision -> Good ending
                 endTitle.innerText = "CHUYÊN GIA ĐIỀU TRA";
                 endTitle.className = "text-green";
                 endDesc.innerHTML = "Tuyệt vời! Dựa trên chứng cứ vững chắc, bạn đã vạch trần các lỗ hổng hệ thống (API, Drive) và sai phạm quy trình (chuyển data qua web cá nhân). Phương án minh bạch và khắc phục toàn diện của bạn giúp nhà trường kiểm soát khủng hoảng và bảo vệ quyền lợi sinh viên hợp pháp.";
+                endingTier = "good";
             }
 
+            // --- Tính toán dữ liệu kết quả cuối để hiển thị & gửi lên Google Sheet ---
+            const durationMs = Date.now() - (gameState.startTime || Date.now());
+            const durationSeconds = Math.max(1, Math.round(durationMs / 1000));
+
+            // Điểm điều tra: tổng hợp từ % chứng cứ thu thập, % nguyên nhân xác định đúng, và điểm theo kết quả cuối
+            const evidenceScore = (evCount / 5) * 50; // tối đa 50 điểm
+            const correctCauses = requiredEvs.filter(e => checkedEvs.includes(e)).length;
+            const causeScore = (correctCauses / requiredEvs.length) * 30; // tối đa 30 điểm
+            const decisionScore = decisionRadio.value === 'good' ? 20 : 5; // tối đa 20 điểm
+            const totalScore = Math.round(evidenceScore + causeScore + decisionScore);
+
+            const completionRate = Math.round((evCount / 5) * 100);
+
+            // Tên danh hiệu rút gọn (không HTML) để lưu trữ
+            const titleTextMap = {
+                bad: "ĐIỀU TRA THẤT BẠI",
+                medium: "CHƯA XỬ LÝ TRIỆT ĐỂ",
+                good: "CHUYÊN GIA ĐIỀU TRA"
+            };
+
+            // Danh sách nguyên nhân đã xác định (tên hiển thị, không phải mã)
+            const causeLabelMap = {
+                E02: "Lỗi thiết lập quyền truy cập công khai (Google Drive)",
+                E04: "Lỗ hổng kỹ thuật (Phân quyền yếu trên hệ thống/API)",
+                E05: "Nhân viên tự ý chuyển dữ liệu qua kênh cá nhân",
+                HACK: "Bị nhóm Hacker APT tấn công tống tiền",
+                SOP: "Tổ chức thiếu quy trình chuẩn quản lý dữ liệu"
+            };
+            const causeText = checkedEvs.length
+                ? checkedEvs.map(c => causeLabelMap[c] || c).join("; ")
+                : "Không xác định";
+
+            gameState.result = {
+                endingTier: endingTier,
+                endingTitle: titleTextMap[endingTier],
+                causeText: causeText,
+                completionRate: completionRate,
+                score: totalScore,
+                evidenceCount: evCount,
+                durationSeconds: durationSeconds,
+                durationText: formatDuration(durationSeconds)
+            };
+
             switchScreen('ending-screen');
+        }
+
+        function formatDuration(totalSeconds) {
+            const m = Math.floor(totalSeconds / 60);
+            const s = totalSeconds % 60;
+            return `${m} phút ${s} giây`;
+        }
+
+        // ======================================================================
+        // TÍCH HỢP GOOGLE SHEETS (Google Apps Script Web App)
+        // ======================================================================
+        // *** QUAN TRỌNG: THAY URL DƯỚI ĐÂY BẰNG URL WEB APP CỦA BẠN ***
+        // Sau khi deploy Google Apps Script (Deploy > New deployment > Web app),
+        // copy URL dạng: https://script.google.com/macros/s/XXXXXXXXXXXXXXXX/exec
+        // và dán vào biến GOOGLE_SCRIPT_URL bên dưới.
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaqW3kXGz-Tf8Cp8nv8gg9xi56OkY7UW2rx3WBHQK2mQU65uMaK5UBzNwHtOWv0SdVsg/exec"; // <-- THAY URL TẠI ĐÂY
+
+        // --- MÀN HÌNH THỐNG KÊ CHI TIẾT (sau khi xem ending-screen) ---
+        function goToDetailedResult() {
+            const r = gameState.result;
+            const p = gameState.player;
+
+            document.getElementById('res-name').innerText = p.name;
+            document.getElementById('res-class').innerText = p.className;
+            document.getElementById('res-score').innerText = r.score;
+            document.getElementById('res-evidence').innerText = `${r.evidenceCount}/5`;
+            document.getElementById('res-completion').innerText = `${r.completionRate}%`;
+            document.getElementById('res-title').innerText = r.endingTitle;
+            document.getElementById('res-cause').innerText = r.causeText;
+            document.getElementById('res-time').innerText = r.durationText;
+
+            switchScreen('detailed-result-screen');
+            submitResultToGoogleSheet();
+        }
+
+        // Gửi kết quả người chơi lên Google Sheet bằng fetch() POST
+        function submitResultToGoogleSheet() {
+            const statusBox = document.getElementById('sync-status-box');
+            const btnLeaderboard = document.getElementById('btn-view-leaderboard');
+
+            statusBox.className = 'sync-status';
+            statusBox.innerHTML = '<span class="spinner"></span> Đang gửi kết quả lên hệ thống...';
+
+            const r = gameState.result;
+            const p = gameState.player;
+            const now = new Date();
+
+            // Dữ liệu gửi lên Google Sheet — đúng các cột yêu cầu
+            const payload = {
+                hoTen: p.name,
+                lop: p.className,
+                diemDieuTra: r.score,
+                soChungCu: r.evidenceCount,
+                ketQuaCuoi: r.endingTitle,
+                thoiGianHoanThanh: r.durationText,
+                ngayGioChoi: now.toLocaleString('vi-VN')
+            };
+
+            // Lưu ý kỹ thuật: Google Apps Script Web App (doPost) khi gọi từ domain khác
+            // (GitHub Pages) thường không trả CORS header cho phép đọc response ở chế độ
+            // "cors" thông thường. Vì ta KHÔNG cần đọc response (chỉ cần ghi vào Sheet),
+            // ta dùng mode: "no-cors". Request vẫn được Apps Script nhận và xử lý bình
+            // thường, chỉ là JS không đọc được nội dung trả về. Đây là cách phổ biến để
+            // gửi dữ liệu Sheet miễn phí, không cần backend, không cần CORS proxy.
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // tránh preflight OPTIONS
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                // Với mode no-cors, ta không thể kiểm tra response.ok hay đọc dữ liệu trả về.
+                // Nếu fetch() không bị reject (lỗi mạng/URL sai), coi như đã gửi thành công.
+                statusBox.className = 'sync-status ok';
+                statusBox.innerHTML = '✓ Đã gửi kết quả thành công lên hệ thống!';
+                btnLeaderboard.disabled = false;
+            })
+            .catch(err => {
+                console.error('Lỗi gửi dữ liệu lên Google Sheet:', err);
+                statusBox.className = 'sync-status err';
+                statusBox.innerHTML = '⚠ Không thể gửi kết quả (kiểm tra kết nối mạng hoặc URL Google Apps Script). Bạn vẫn có thể xem bảng xếp hạng.';
+                btnLeaderboard.disabled = false;
+            });
+        }
+
+        // --- MÀN HÌNH BẢNG XẾP HẠNG + THỐNG KÊ TỔNG ---
+        function goToLeaderboard() {
+            switchScreen('leaderboard-screen');
+            loadLeaderboardAndStats();
+        }
+
+        // Lấy danh sách toàn bộ người chơi từ Google Sheet bằng fetch() GET,
+        // rồi tự tính bảng xếp hạng + thống kê tổng ngay trên client.
+        function loadLeaderboardAndStats() {
+            const listEl = document.getElementById('leaderboard-list');
+            listEl.innerHTML = '<li><span class="lb-name"><span class="spinner"></span> Đang tải dữ liệu...</span></li>';
+
+            fetch(GOOGLE_SCRIPT_URL + '?action=getResults')
+                .then(res => res.json())
+                .then(data => {
+                    // data.results: mảng các bản ghi { hoTen, lop, diemDieuTra, soChungCu, ketQuaCuoi, thoiGianHoanThanh, ngayGioChoi }
+                    renderLeaderboard(data.results || []);
+                    renderOverallStats(data.results || []);
+                })
+                .catch(err => {
+                    console.error('Lỗi tải dữ liệu bảng xếp hạng:', err);
+                    listEl.innerHTML = '<li><span class="lb-name text-warn">⚠ Không thể tải dữ liệu từ Google Sheet. Kiểm tra URL Apps Script hoặc kết nối mạng.</span></li>';
+                });
+        }
+
+        function renderLeaderboard(results) {
+            const listEl = document.getElementById('leaderboard-list');
+            if (!results.length) {
+                listEl.innerHTML = '<li><span class="lb-name">Chưa có dữ liệu người chơi.</span></li>';
+                return;
+            }
+
+            const sorted = [...results].sort((a, b) => (Number(b.diemDieuTra) || 0) - (Number(a.diemDieuTra) || 0));
+            const top10 = sorted.slice(0, 10);
+
+            listEl.innerHTML = top10.map(p => {
+                const isMe = p.hoTen === gameState.player.name && Number(p.diemDieuTra) === gameState.result.score;
+                return `
+                    <li class="${isMe ? 'lb-me' : ''}">
+                        <span class="lb-name">${escapeHtml(p.hoTen || 'Ẩn danh')}${p.lop ? ` <span style="color:var(--text-muted); font-size:0.8rem; margin-left:6px;">(${escapeHtml(p.lop)})</span>` : ''}</span>
+                        <span class="lb-score">${p.diemDieuTra || 0} điểm</span>
+                    </li>`;
+            }).join('');
+        }
+
+        function renderOverallStats(results) {
+            const total = results.length;
+            document.getElementById('st-total').innerText = total;
+
+            if (!total) {
+                document.getElementById('st-avg').innerText = '0';
+                document.getElementById('st-complete-rate').innerText = '0%';
+                document.getElementById('st-good-rate').innerText = '0%';
+                return;
+            }
+
+            const scores = results.map(p => Number(p.diemDieuTra) || 0);
+            const avgScore = Math.round(scores.reduce((a, b) => a + b, 0) / total);
+
+            // "Hoàn thành game" = đã có bản ghi kết quả cuối (mọi bản ghi gửi lên đều là đã hoàn thành)
+            const completedCount = results.filter(p => p.ketQuaCuoi && p.ketQuaCuoi.trim() !== '').length;
+            const completionRate = Math.round((completedCount / total) * 100);
+
+            // "Kết thúc tốt" = danh hiệu CHUYÊN GIA ĐIỀU TRA
+            const goodCount = results.filter(p => (p.ketQuaCuoi || '').includes('CHUYÊN GIA ĐIỀU TRA')).length;
+            const goodRate = Math.round((goodCount / total) * 100);
+
+            document.getElementById('st-avg').innerText = avgScore;
+            document.getElementById('st-complete-rate').innerText = `${completionRate}%`;
+            document.getElementById('st-good-rate').innerText = `${goodRate}%`;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         }
 
         // --- UI & MODALS ---
